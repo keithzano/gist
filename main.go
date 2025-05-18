@@ -21,6 +21,7 @@ func gistView(w http.ResponseWriter, r *http.Request) {
 
 func gistCreate(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
+		w.Header().Set("Allowed", "POST")
 		w.WriteHeader(405)
 		w.Write([]byte("Method not allowed"))
 		return
