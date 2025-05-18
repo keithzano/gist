@@ -19,7 +19,7 @@ func gistView(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func gistCreat(w http.ResponseWriter, r *http.Request) {
+func gistCreate(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("This is The create page"))
 }
 
@@ -27,7 +27,7 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", home)
 	mux.HandleFunc("/view", gistView)
-	mux.HandleFunc("/create", gistCreat)
+	mux.HandleFunc("/create", gistCreate)
 	fmt.Println("The server is starting on port :4000")
 	err := http.ListenAndServe(":4000", mux)
 	if err != nil {
