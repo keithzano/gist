@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 func home(w http.ResponseWriter, r *http.Request) {
@@ -15,7 +16,12 @@ func home(w http.ResponseWriter, r *http.Request) {
 }
 
 func gistView(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("This is the view page"))
+	id, err := strconv.Atoi(r.URL.Query().Get("id"))
+	if err != nil || id < 1 {
+		http.NotFound(w, r)
+		return
+	}
+	fmt.Fprintf(w, "Display a specific gist with ID : %d", id)
 
 }
 
