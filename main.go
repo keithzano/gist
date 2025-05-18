@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -13,6 +14,9 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", home)
 	fmt.Println("The server is starting on port :4000")
-	http.ListenAndServe(":4000", mux)
+	err := http.ListenAndServe(":4000", mux)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 }
