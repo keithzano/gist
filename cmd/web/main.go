@@ -2,15 +2,18 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"log"
 	"net/http"
+	"os"
 )
 
 func main() {
 	mux := http.NewServeMux()
 	addr := flag.String("addr", ":4000", "HTTP network address")
 	flag.Parse()
+
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
 	fileServer := http.FileServer(http.Dir("./ui/static/"))
 	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
@@ -19,9 +22,9 @@ func main() {
 	mux.HandleFunc("/view", view)
 	mux.HandleFunc("/create", create)
 
-	fmt.Printf("Staring Server on port: %s", *addr)
+	infoLog.Printf("Staring Server on port: %s", *addr)
 	err := http.ListenAndServe(*addr, mux)
 	if err != nil {
-		log.Fatal(err)
+		errorLog.Fatal(err)
 	}
 }
