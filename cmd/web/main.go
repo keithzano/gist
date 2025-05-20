@@ -22,8 +22,14 @@ func main() {
 	mux.HandleFunc("/view", view)
 	mux.HandleFunc("/create", create)
 
+	srv := &http.Server{
+		Addr:     *addr,
+		ErrorLog: errorLog,
+		Handler:  mux,
+	}
+
 	infoLog.Printf("Staring Server on port: %s", *addr)
-	err := http.ListenAndServe(*addr, mux)
+	err := srv.ListenAndServe()
 	if err != nil {
 		errorLog.Fatal(err)
 	}
