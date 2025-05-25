@@ -40,19 +40,19 @@ func (m *GistModel) Get(id int) (*Gist, error) {
 
 	row := m.DB.QueryRow(stmt, id)
 
-	s := &Gist{}
+	gist := &Gist{}
 
-	err := row.Scan(&s.ID, &s.Title, &s.Content, &s.Created, &s.Expires)
+	err := row.Scan(&gist.ID, &gist.Title, &gist.Content, &gist.Created, &gist.Expires)
 	if err != nil {
 
 		if errors.Is(err, sql.ErrNoRows) {
-			return nil, sql.ErrNoRows
+			return nil, ErrNoRecord
 		} else {
 			return nil, err
 		}
 	}
 
-	return s, nil
+	return gist, nil
 }
 
 func (m *GistModel) Latest() ([]*Gist, error) {

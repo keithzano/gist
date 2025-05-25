@@ -1,7 +1,9 @@
 package main
 
 import (
+	"errors"
 	"fmt"
+	"gist/internal/models"
 	"html/template"
 	"net/http"
 	"strconv"
@@ -36,7 +38,16 @@ func (app *application) view(w http.ResponseWriter, r *http.Request) {
 	if err != nil || id < 1 {
 		app.notFound(w)
 	}
-	fmt.Fprintf(w, "Display a specific snippet with ID %d...", id)
+	gist, err := app.gist.Get(id)
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			app.notFound(w)
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+	fmt.Fprintf(w, "%+v", gist)
 
 }
 
