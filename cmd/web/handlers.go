@@ -4,7 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"gist/internal/models"
-	"html/template"
+
+	//"html/template"
 	"net/http"
 	"strconv"
 )
@@ -14,23 +15,34 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
-
-	files := []string{
-		"./ui/html/base.html",
-		"./ui/html/pages/home.html",
-		"./ui/html/partials/nav.html",
-	}
-
-	ts, err := template.ParseFiles(files...)
+	gists, err := app.gist.Latest()
 	if err != nil {
 		app.serverError(w, err)
 		return
 	}
 
-	err = ts.ExecuteTemplate(w, "base", nil)
-	if err != nil {
-		app.serverError(w, err)
+	for _, gist := range gists {
+		fmt.Fprintf(w, "%+v\n", gist)
 	}
+
+	/*
+		files := []string{
+			"./ui/html/base.html",
+			"./ui/html/pages/home.html",
+			"./ui/html/partials/nav.html",
+		}
+
+		ts, err := template.ParseFiles(files...)
+		if err != nil {
+			app.serverError(w, err)
+			return
+		}
+
+		err = ts.ExecuteTemplate(w, "base", nil)
+		if err != nil {
+			app.serverError(w, err)
+		}
+	*/
 }
 
 func (app *application) view(w http.ResponseWriter, r *http.Request) {
