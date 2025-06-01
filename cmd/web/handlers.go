@@ -70,7 +70,10 @@ func (app *application) view(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, err)
 		return
 	}
-	err = ts.ExecuteTemplate(w, "base", gist)
+	data := &templateData{
+		Gist: gist,
+	}
+	err = ts.ExecuteTemplate(w, "base", data)
 	if err != nil {
 		app.serverError(w, err)
 	}
