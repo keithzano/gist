@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"gist/internal/models"
+	"html/template"
 
 	//"html/template"
 	"net/http"
@@ -59,7 +60,20 @@ func (app *application) view(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	fmt.Fprintf(w, "%+v", gist)
+	files := []string{
+		"./ui/html/base.html",
+		"./ui/html/pages/view.html",
+		"./ui/html/partials/nav.html",
+	}
+	ts, err := template.ParseFiles(files...)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+	err = ts.ExecuteTemplate(w, "base", gist)
+	if err != nil {
+		app.serverError(w, err)
+	}
 
 }
 
