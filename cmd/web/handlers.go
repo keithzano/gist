@@ -21,7 +21,7 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	app.render(w, http.StatusOK, "home.tmpl", &templateData{
+	app.render(w, http.StatusOK, "home.html", &templateData{
 		Gists: gists,
 	})
 
@@ -42,7 +42,7 @@ func (app *application) view(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	app.render(w, http.StatusOK, "view.tmpl", &templateData{
+	app.render(w, http.StatusOK, "view.html", &templateData{
 		Gist: gist,
 	})
 
